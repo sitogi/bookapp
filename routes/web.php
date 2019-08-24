@@ -26,7 +26,7 @@ Route::group(['middleware' => ['web']], function () {
     });
 
     Route::post('/book', function(Request $request) {
-        $validator = Validator::make($request -> all(), [
+        $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
         ]);
 
@@ -41,11 +41,13 @@ Route::group(['middleware' => ['web']], function () {
         $book->save();
 
         return redirect('/');
-
     });
 
-    Route::delete('/book/{book}', function(Request $book) {
-        //
+    // {} で囲むと自動的に ID 番号になり、その ID の Book が自動で $book に格納される
+    Route::delete('/book/{book}', function(Book $book) {
+        $book->delete();
+
+        return redirect('/');
     });
 
 });
