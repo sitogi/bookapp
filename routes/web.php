@@ -1,16 +1,32 @@
 <?php
 
+use App\Book;
+use Illuminate\Http\Request;
+use
+
+// ルート
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
+Route::get('/', function () {
+    return view('books');
+});
 */
 
-Route::get('/', function () {
-    return view('welcome');
+/*
+Web アプリケーションのエントリポイント。
+ミドルウェアという仕組みを介して、インタフェースがブラウザの場合と、コマンドラインや API などでそれぞれ違う処理を返す、ということをしている。
+*/
+Route::group(['middleware' => ['web']], function () {
+    Route::get('/', function() {
+        echo "Hello Laravel!!";
+    });
+
+    Route::post('/book', function(Request $request) {
+        //
+    });
+
+    Route::delete('/book/{book}', function(Request $book) {
+        //
+    });
+
 });
+
