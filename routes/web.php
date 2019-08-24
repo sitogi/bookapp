@@ -2,7 +2,6 @@
 
 use App\Book;
 use Illuminate\Http\Request;
-use
 
 // ルート
 /*
@@ -17,7 +16,13 @@ Web アプリケーションのエントリポイント。
 */
 Route::group(['middleware' => ['web']], function () {
     Route::get('/', function() {
-        echo "Hello Laravel!!";
+        // Book モデルを呼ぶと books テーブルを参照するように関連付けられている
+        $books = Book::all();
+
+        // resources/views/books.blade.php に紐付けられる
+        return view('books', [
+            'books' => $books
+        ]);
     });
 
     Route::post('/book', function(Request $request) {
