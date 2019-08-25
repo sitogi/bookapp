@@ -15,7 +15,7 @@ Web アプリケーションのエントリポイント。
 ミドルウェアという仕組みを介して、インタフェースがブラウザの場合と、コマンドラインや API などでそれぞれ違う処理を返す、ということをしている。
 */
 Route::group(['middleware' => ['web']], function () {
-    Route::get('/', function() {
+    Route::get('/', ['middleware' => 'auth', function() {
         // Book モデルを呼ぶと books テーブルを参照するように関連付けられている
         $books = Book::all();
 
@@ -23,9 +23,9 @@ Route::group(['middleware' => ['web']], function () {
         return view('books', [
             'books' => $books
         ]);
-    });
+    }]);
 
-    Route::post('/book', function(Request $request) {
+    Route::post('/book', ['middleware' => 'auth', function(Request $request) {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
         ]);
@@ -41,14 +41,14 @@ Route::group(['middleware' => ['web']], function () {
         $book->save();
 
         return redirect('/');
-    });
+    }]);
 
     // {} で囲むと自動的に ID 番号になり、その ID の Book が自動で $book に格納される
-    Route::delete('/book/{book}', function(Book $book) {
+    Route::delete('/book/{book}', ['middleware' => 'auth', function(Book $book) {
         $book->delete();
 
         return redirect('/');
-    });
+    }]);
 
     Route::auth();
 
